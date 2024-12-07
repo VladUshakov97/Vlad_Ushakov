@@ -47,4 +47,10 @@ menu = urwid.Pile([ask, reply])
 menu = urwid.Filler(menu, valign='top')
 
 urwid.connect_signal(ask, 'change', on_ask_change)
-urwid.MainLoop(menu).run()
+
+
+def main():
+    urwid.MainLoop(menu).run()
+
+if __name__ == "__main__":
+    main()
