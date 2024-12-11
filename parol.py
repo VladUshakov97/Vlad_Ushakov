@@ -41,22 +41,19 @@ def calculate_score(password):
     return score
 
 
-def on_ask_change(edit, new_edit_text):
-    score = calculate_score(new_edit_text)
-    reply.set_text(f"Рейтинг пароля: {score} из 12")
-
-
-ask = urwid.Edit("Введите пароль: ", mask="*")
-reply = urwid.Text("Рейтинг пароля: 0 из 12")
-menu = urwid.Pile([ask, reply])
-menu = urwid.Filler(menu, valign="top")
-
-urwid.connect_signal(ask, "change", on_ask_change)
-
-
 def main():
+    def on_ask_change(edit, new_edit_text):
+        score = calculate_score(new_edit_text)
+        reply.set_text(f"Рейтинг пароля: {score} из 12")
+
+    ask = urwid.Edit("Введите пароль: ", mask="*")
+    reply = urwid.Text("Рейтинг пароля: 0 из 12")
+    menu = urwid.Pile([ask, reply])
+    menu = urwid.Filler(menu, valign="top")
+
+    urwid.connect_signal(ask, "change", on_ask_change)
     urwid.MainLoop(menu).run()
 
 
-if __name__ == "__main__":
+if name == "__main__":
     main()
