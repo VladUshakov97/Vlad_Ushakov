@@ -3,15 +3,6 @@ from dotenv import load_dotenv
 from pytimeparse import parse
 import ptbot
 
-TG_ENV_FILE = 'tg.env'
-TG_TOKEN = os.getenv("TELEGRAM_TOKEN")
-TG_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
-
-load_dotenv(TG_ENV_FILE)
-
-bot = ptbot.Bot(TG_TOKEN)
-
-
 def render_progressbar(total, iteration, prefix='', suffix='', length=30, fill='█', zfill='░'):
     iteration = min(total, iteration)
     percent = "{0:.1f}".format(100 * (iteration / float(total)))
@@ -38,6 +29,13 @@ def time_up(chat_id, message_id):
 
 
 def main():
+    TG_ENV_FILE = 'tg.env'
+    load_dotenv(TG_ENV_FILE)
+    TG_TOKEN = os.getenv("TELEGRAM_TOKEN")
+    TG_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+
+    global bot
+    bot = ptbot.Bot(TG_TOKEN)
     bot.reply_on_message(reply)
     bot.run_bot()
 
