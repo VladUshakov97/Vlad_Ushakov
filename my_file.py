@@ -5,7 +5,6 @@ import folium
 from dotenv import load_dotenv
 import os 
 
-load_dotenv('secret.env')
 
 def fetch_coordinates(apikey, address):
     base_url = "https://geocode-maps.yandex.ru/1.x"
@@ -23,6 +22,7 @@ def fetch_coordinates(apikey, address):
     return lat, lon
 
 def main():
+    load_dotenv('secret.env')
     apikey = os.getenv('APIKEY')
     with open('coffee.json', 'r', encoding='CP1251') as my_file:
         coffee_data = json.load(my_file)
