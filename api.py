@@ -69,9 +69,8 @@ def is_shorten_link(user_url):
         return user_url, key  
     else:
         return shorten_link(token, user_url)
+
 def main():
-    
-    
     short_link, key = is_shorten_link(user_url)
     clicks = count_clicks(token, key)
 
