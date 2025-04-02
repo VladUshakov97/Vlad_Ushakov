@@ -18,12 +18,9 @@ def shorten_link(token, user_url):
 
     response = requests.get('https://api.vk.com/method/utils.getShortLink', params=payload)
     response.raise_for_status()
-    data = response.json()
+    response_json = response.json()
 
-    if 'error' in data:
-        raise VKAPIError(data['error']['error_msg'])
-
-    return data['response']['short_url']
+    return response_json['response']['short_url']
 
 
 def count_clicks(token, key):
@@ -37,12 +34,9 @@ def count_clicks(token, key):
 
     response = requests.get('https://api.vk.com/method/utils.getLinkStats', params=payload)
     response.raise_for_status()
-    data = response.json()
+    stats_json = response.json()
 
-    if 'error' in data:
-        raise VKAPIError(data['error']['error_msg'])
-
-    return data['response']['stats']
+    return stats_json['response']['stats']
 
 
 def is_shorten_link(token, user_url):
@@ -54,34 +48,27 @@ def is_shorten_link(token, user_url):
 
     response = requests.get('https://api.vk.com/method/utils.resolveScreenName', params=payload)
     response.raise_for_status()
-    data = response.json()
+    screen_name_json = response.json()
 
-    return 'response' in data and 'object_id' in data['response']
-
-
-def extract_key(user_url):
-    return urlparse(user_url).path.strip('/')
+    return 'response' in screen_name_json and 'object_id' in screen_name_json['response']
 
 
 def main():
     load_dotenv()
-    token = os.getenv('VK_TOKEN')
+    token = os.environ['VK_TOKEN']
 
     user_url = input("Введите ссылку: ")
 
     try:
         if is_shorten_link(token, user_url):
-            key = extract_key(user_url)
             clicks = count_clicks(token, key)
             print("Клики:", clicks)
         else:
             short_link = shorten_link(token, user_url)
             print("Сокращенная ссылка:", short_link)
 
-    except requests.exceptions.HTTPError as error:
-        print(f"Ошибка сети: {error}")
-    except VKAPIError as error:
-        print(f"Ошибка API: {error}")
+    except (requests.exceptions.HTTPError, KeyError) as error:
+        print(f"Ошибка сети или API: {error}")
 
 
 if __name__ == '__main__':
