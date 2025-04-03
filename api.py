@@ -18,9 +18,9 @@ def shorten_link(token, user_url):
 
     response = requests.get('https://api.vk.com/method/utils.getShortLink', params=payload)
     response.raise_for_status()
-    response_json = response.json()
+    response = response.json()
 
-    return response_json['response']['short_url']
+    return response['response']['short_url']
 
 
 def count_clicks(token, key):
@@ -34,9 +34,9 @@ def count_clicks(token, key):
 
     response = requests.get('https://api.vk.com/method/utils.getLinkStats', params=payload)
     response.raise_for_status()
-    stats_json = response.json()
+    stats = response.json()
 
-    return stats_json['response']['stats']
+    return stats['response']['stats']
 
 
 def is_shorten_link(token, user_url):
@@ -48,9 +48,9 @@ def is_shorten_link(token, user_url):
 
     response = requests.get('https://api.vk.com/method/utils.resolveScreenName', params=payload)
     response.raise_for_status()
-    screen_name_json = response.json()
+    link_info = response.json()
 
-    return 'response' in screen_name_json and 'object_id' in screen_name_json['response']
+    return 'error' not in screen_name and 'object_id' in screen_name['response']
 
 
 def main():
