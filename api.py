@@ -40,10 +40,14 @@ def count_clicks(token, key):
 
 
 def is_shorten_link(token, user_url):
+    parsed_url = urlparse(user_url)
+    key = parsed_url.path.strip('/')
+
     payload = {
         "access_token": token,
         "v": "5.199",
-        "url": user_url
+        "key": key,
+        "interval": "forever"
     }
 
     response = requests.get('https://api.vk.com/method/utils.getLinkStats', params=payload)
@@ -58,6 +62,8 @@ def main():
     token = os.environ['VK_TOKEN']
 
     user_url = input("Введите ссылку: ")
+    parsed_url = urlparse(user_url)
+    key = parsed_url.path.strip('/')
 
     try:
         if is_shorten_link(token, user_url):
