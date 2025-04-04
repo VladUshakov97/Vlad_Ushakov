@@ -46,11 +46,11 @@ def is_shorten_link(token, user_url):
         "url": user_url
     }
 
-    response = requests.get('https://api.vk.com/method/utils.resolveScreenName', params=payload)
+    response = requests.get('https://api.vk.com/method/utils.getLinkStats', params=payload)
     response.raise_for_status()
     link_info = response.json()
 
-    return 'error' not in screen_name and 'object_id' in screen_name['response']
+    return 'error' not in link_info 
 
 
 def main():
